@@ -6,7 +6,7 @@ export function App() {
     <div className="w-full h-full">
       <Header
         title="Hello, jworks!"
-        handleClickMenuButton={() => console.log()}
+        handleClickMenuButton={() => console.log('the menu button was clicked')}
       ></Header>
     </div>
   );

@@ -18,6 +18,22 @@ module.exports = {
       black: '#000',
       white: '#fff',
 
+      primary: {
+        100: '#ebf8ff',
+        200: '#bee3f8',
+        //jworks color
+        300: '#E37C30',
+        400: '#63b3ed',
+        //jworks color
+        500: '#E7904B',
+        600: '#3182ce',
+        //jworks color
+        700: '#EAB285',
+        800: '#2c5282',
+        //jworks color
+        900: '#F7D1A7',
+      },
+
       gray: {
         100: '#f7fafc',
         200: '#edf2f7',

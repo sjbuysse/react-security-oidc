@@ -32,7 +32,6 @@ export function App() {
                     </Switch>
                 </SidenavContent>
             </SidenavContainer>
-            </div>
         </div>
     );
 }

@@ -1,0 +1,9 @@
+.action-button-menu {
+  padding: 10px;
+  display: grid;
+  grid-gap: 10px;
+}
+
+.action-button-menu__link:hover {
+  background: transparent;
+}

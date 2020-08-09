@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Sidenav, SidenavContainer, SidenavContent, Header, NavItems } from './components';
 import { Switch, Route } from "react-router-dom";
 import { Routes } from './routes';
+import { ClientsPage } from './clients';
 
 const navItems = [{
     name: 'products',
@@ -27,7 +28,7 @@ export function App() {
                             Here comes the products page
                         </Route>
                         <Route path={Routes.CLIENTS}>
-                            Here comes the clients page
+                            <ClientsPage />
                         </Route>
                     </Switch>
                 </SidenavContent>

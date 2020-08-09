@@ -18,21 +18,22 @@ export function App() {
         <div className="w-full h-full flex flex-col">
             <Header title='Jworks base app' handleClickMenuButton={() => setIsSidebarOpen(!isSidebarOpen)}/>
             <div className="flex flex-1 flex-auto">
-            <SidenavContainer>
-                <Sidenav isSidenavOpen={isSidebarOpen}>
-                    <NavItems navItems={navItems}/>
-                </Sidenav>
-                <SidenavContent>
-                    <Switch>
-                        <Route path={Routes.PRODUCTS}>
-                            Here comes the products page
-                        </Route>
-                        <Route path={Routes.CLIENTS}>
-                            <ClientsPage />
-                        </Route>
-                    </Switch>
-                </SidenavContent>
-            </SidenavContainer>
+                <SidenavContainer>
+                    <Sidenav isSidenavOpen={isSidebarOpen}>
+                        <NavItems navItems={navItems}/>
+                    </Sidenav>
+                    <SidenavContent>
+                        <Switch>
+                            <Route path={Routes.PRODUCTS}>
+                                Here comes the products page
+                            </Route>
+                            <Route path={Routes.CLIENTS}>
+                                <ClientsPage/>
+                            </Route>
+                        </Switch>
+                    </SidenavContent>
+                </SidenavContainer>
+            </div>
         </div>
     );
 }

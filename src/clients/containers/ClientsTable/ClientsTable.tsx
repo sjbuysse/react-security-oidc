@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Client } from "../../types/Client";
-import { getClients } from "../../services/clients";
-import { Table, Page } from "../../../components";
+import { Client } from "../../types";
+import { getClients } from "../../services";
+import { Table } from "components";
 
 interface ClientTableData {
     id: string;

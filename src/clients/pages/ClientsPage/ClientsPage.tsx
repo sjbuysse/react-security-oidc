@@ -23,11 +23,11 @@ export function ClientsPage() {
             </Route>
             <Route path={`${path}/create`}>
                 <Page title="Create client">
-                    Here will come the CreateClient container
+                    <CreateClient></CreateClient>
                 </Page>
             </Route>
             <Route path={`${path}/:clientId/edit`}>
-                <Page title="Edit client">
+                <Page title="Edit client" >
                     Here will come the EditClient container
                 </Page>
             </Route>

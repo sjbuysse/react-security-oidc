@@ -1,5 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD
 import {
     Switch,
     Route,
@@ -35,9 +34,3 @@ export function ClientsPage() {
         </Switch>
     );
 }
-=======
-
-export const ClientsPage = () => (
-    <h2>Here comes the clients page</h2>
-)
->>>>>>> Add solution to ch04

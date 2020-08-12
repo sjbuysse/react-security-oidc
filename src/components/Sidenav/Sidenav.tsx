@@ -4,7 +4,7 @@ import { useTransition, animated } from "react-spring";
 export const SidenavContainer: React.FC = React.memo(({ children }) => (
   <div
     data-testid="sidenav-container"
-    className="flex flex-row flex-1 overflow-hidden h-full"
+    className="flex flex-row flex-1 overflow-hidden"
   >
     {children}
   </div>

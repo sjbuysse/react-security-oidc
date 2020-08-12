@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Client } from "../../types";
+import { Client } from "../../model";
 import { getClients } from "../../services";
 import { Table } from "components";
 

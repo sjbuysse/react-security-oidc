@@ -22,18 +22,19 @@ interface ClientFormFields {
 }
 
 interface Props {
+  client?: Client;
   onSubmit: (product: Partial<Client>) => void;
   onCancel: () => void;
 }
 
-export function ClientForm({onSubmit, onCancel }: Props) {
+export function ClientForm({client, onSubmit, onCancel }: Props) {
   const [fields, setFields] = useState<ClientFormFields>({
-    firstName: { value: '', errors: [] },
-    lastName: { value: '', errors: [] },
-    email: { value: '', errors: [] },
-    birthday: { value: '', errors: [] },
-    city: { value: '' , errors: [] },
-    zip: { value: '', errors: [] },
+    firstName: { value: !!client ? client.firstName : '', errors: [] },
+    lastName: { value: !!client ? client.lastName : '', errors: [] },
+    email: { value: !!client ? client.email : '', errors: [] },
+    birthday: { value: !!client ? client.birthday : '', errors: [] },
+    city: { value: !!client ? client.city : '' , errors: [] },
+    zip: { value: !!client ? client.zip : '', errors: [] },
   });
   const { firstName, lastName, email, birthday, city, zip } = fields;
 

@@ -2,6 +2,9 @@ import { Client } from "../models";
 
 const apiUrl = "https://base-app-backend.herokuapp.com/clients";
 
+export const getClient = async (id: string): Promise<Client> =>
+    (await fetch(`${apiUrl}/${id}`)).json();
+
 export const getClients = async (): Promise<Client[]> =>
   (await fetch(apiUrl)).json();
 

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ClientForm, Client, getClient } from "clients";
+import React, { useEffect, useState } from 'react';
+import { ClientForm, Client, getClient, editClient } from "clients";
 import { match, useRouteMatch, useHistory } from 'react-router-dom';
 
 export function EditClient() {
@@ -14,7 +14,7 @@ export function EditClient() {
         setClient(client);
     };
     const onEditClient = async (clientFields: Partial<Client>) => {
-        await editClient({ ...client, ...clientFields });
+        await editClient({ ...client!, ...clientFields });
         goBackToClients();
     };
 

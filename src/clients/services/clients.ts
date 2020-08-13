@@ -17,3 +17,14 @@ export const createClient = async (
             body: JSON.stringify(client),
         })
     ).json();
+
+export const editClient = async (client: Client): Promise<Client[]> =>
+    (
+        await fetch(`${apiUrl}/${client.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(client),
+        })
+    ).json();

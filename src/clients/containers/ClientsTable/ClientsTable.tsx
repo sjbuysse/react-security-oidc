@@ -28,8 +28,8 @@ export function ClientsTable() {
             <Table
                 headers={[ "Id", "Name" ]}
                 data={clientTableData}
-                onEdit={() => {}}
-                onDelete={() => {}}
+                onEdit={(clientId) => {console.log(`in the future this ${clientId} might come in handy.`)}}
+                onDelete={(clientId) => {console.log(`in the future this ${clientId} might come in handy.`)}}
             ></Table>
     );
 }

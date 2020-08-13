@@ -34,3 +34,9 @@ export const editClient = async (client: Client): Promise<Client> =>
             body: JSON.stringify(client),
         })
     ).json();
+
+export const deleteClient = async (id: string): Promise<any> => {
+    return await fetch(`${apiUrl}/${id}`, {
+        method: "DELETE",
+    });
+};

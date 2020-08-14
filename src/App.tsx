@@ -3,6 +3,7 @@ import { Sidenav, SidenavContainer, SidenavContent, Header, NavItems } from './c
 import { Switch, Route } from "react-router-dom";
 import { Routes } from './routes';
 import { ClientsPage } from './clients';
+import { ProductsPage } from './products/pages';
 
 const navItems = [{
     name: 'products',
@@ -25,7 +26,7 @@ export function App() {
                     <SidenavContent>
                         <Switch>
                             <Route path={Routes.PRODUCTS}>
-                                Here comes the products page
+                                <ProductsPage/>
                             </Route>
                             <Route path={Routes.CLIENTS}>
                                 <ClientsPage/>

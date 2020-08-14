@@ -17,7 +17,6 @@ export function ProductsPage() {
   const gotToCreateProduct = () => push(`${url}/create`);
 
   return (
-    <Page title="Products" onCreateButtonClick={() => push(`${url}/create`)}>
       <Switch>
         <Route exact path={url}>
           <Page title="Products" onCreateButtonClick={gotToCreateProduct}>
@@ -25,16 +24,15 @@ export function ProductsPage() {
           </Page>
         </Route>
         <Route path={`${url}/create`}>
-          <Page title="Products">
+          <Page title="Create product">
             <CreateProduct></CreateProduct>
           </Page>
         </Route>
         <Route path={`${url}/:productId/edit`}>
-          <Page title="Products">
+          <Page title="Edit product">
             <EditProduct></EditProduct>
           </Page>
         </Route>
       </Switch>
-    </Page>
   );
 }

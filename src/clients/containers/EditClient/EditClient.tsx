@@ -10,8 +10,8 @@ export function EditClient() {
     const [client, setClient] = useState<Client | undefined>(undefined);
     const goBackToClients = () => push("/clients");
     const retrieveClient = async () => {
-        const client = await getClient(clientId);
-        setClient(client);
+        const result = await getClient(clientId);
+        setClient(result);
     };
     const onEditClient = async (clientFields: Partial<Client>) => {
         await editClient({ ...client!, ...clientFields });

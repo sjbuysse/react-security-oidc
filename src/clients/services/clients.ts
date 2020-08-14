@@ -7,7 +7,7 @@ export const getClients = async (): Promise<Client[]> =>
 
 export const createClient = async (
     client: Partial<Client>
-): Promise<Client[]> =>
+): Promise<Client> =>
     (
         await fetch(apiUrl, {
             method: "POST",

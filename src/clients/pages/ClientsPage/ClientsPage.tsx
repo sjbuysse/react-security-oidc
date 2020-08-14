@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import { Page } from '../../../components';
 import { ClientsTable } from '../../containers/ClientsTable/ClientsTable';
+import { CreateClient } from 'clients';
 
 export function ClientsPage() {
     const { url, path }: match = useRouteMatch();

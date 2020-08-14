@@ -22,12 +22,12 @@ export function ClientsPage() {
                 </Page>
             </Route>
             <Route path={`${path}/create`}>
-                <Page title="Create client" onCreateButtonClick={gotToCreateClient}>
+                <Page title="Create client">
                     Here will come the CreateClient container
                 </Page>
             </Route>
             <Route path={`${path}/:clientId/edit`}>
-                <Page title="Edit client" onCreateButtonClick={gotToCreateClient}>
+                <Page title="Edit client">
                     Here will come the EditClient container
                 </Page>
             </Route>

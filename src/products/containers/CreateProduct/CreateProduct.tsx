@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { ProductForm, createProduct, Product } from "products";
+import { Dialog } from '../../../components/Dialog/Dialog';
 
 export function CreateProduct() {
   const { push } = useHistory();
@@ -11,9 +12,11 @@ export function CreateProduct() {
   };
 
   return (
-      <ProductForm
-          onSubmit={onCreateProduct}
-          onCancel={goBackToProducts}
-      ></ProductForm>
+      <Dialog show={true} title={'Create client'} onClose={goBackToProducts}>
+          <ProductForm
+              onSubmit={onCreateProduct}
+              onCancel={goBackToProducts}
+          ></ProductForm>
+      </Dialog>
   );
 }

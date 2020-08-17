@@ -20,7 +20,6 @@ export function EditProduct() {
     };
 
     useEffect(() => {
-        console.log('hier');
         retrieveProduct();
         // eslint-disable-next-line
     }, []);

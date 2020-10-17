@@ -10,8 +10,8 @@ import { Page } from '../../../components';
 import { ClientsTable, CreateClient, EditClient } from '../../containers';
 
 export function ClientsPage() {
-    const { url, path }: match = useRouteMatch();
-    const { push } = useHistory();
+    const {url, path}: match = useRouteMatch();
+    const {push} = useHistory();
     const gotToCreateClient = () => push(`${url}/create`);
 
     return (

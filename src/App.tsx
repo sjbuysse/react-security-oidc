@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Header } from "./components";
-import { Sidenav, SidenavContainer, SidenavContent } from './components/Sidenav/Sidenav';
+import { Sidenav, SidenavContainer, SidenavContent } from './components';
 
 export function App() {
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);

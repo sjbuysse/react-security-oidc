@@ -1,6 +1,6 @@
 import { Product } from "products/types";
 
-const apiUrl = "http://localhost:8080/products";
+const apiUrl = "https://base-app-backend.herokuapp.com/products";
 
 export const getProduct = async (id: string): Promise<Product> =>
     (await fetch(`${apiUrl}/${id}`)).json();

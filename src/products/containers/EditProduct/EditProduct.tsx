@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { match, useRouteMatch, useHistory } from "react-router-dom";
 import { Product, getProduct, editProduct, ProductForm } from "products";
-import { getClient } from '../../../clients/services';
 
 export function EditProduct() {
     const {

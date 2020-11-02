@@ -1,4 +1,4 @@
-import { Client } from "../model";
+import { Client } from "../models";
 
 const apiUrl = "https://base-app-backend.herokuapp.com/clients";
 

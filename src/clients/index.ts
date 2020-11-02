@@ -1,5 +1,5 @@
 export * from "./containers";
 export * from "./components";
-export * from "./model";
+export * from "./models";
 export * from "./services";
 export * from "./pages";

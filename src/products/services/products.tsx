@@ -1,4 +1,4 @@
-import { Product } from "products/types";
+import { Product } from "products/models";
 
 const apiUrl = "https://base-app-backend.herokuapp.com/products";
 

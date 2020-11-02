@@ -11,24 +11,24 @@ import { ProductsTable } from "products";
 import { EditProduct, CreateProduct } from "products/containers";
 
 export function ProductsPage() {
-  const { url }: match = useRouteMatch();
+  const { url, path }: match = useRouteMatch();
   const { push } = useHistory();
 
   const gotToCreateProduct = () => push(`${url}/create`);
 
   return (
       <Switch>
-        <Route exact path={url}>
+        <Route exact path={path}>
           <Page title="Products" onCreateButtonClick={gotToCreateProduct}>
             <ProductsTable></ProductsTable>
           </Page>
         </Route>
-        <Route path={`${url}/create`}>
+        <Route path={`${path}/create`}>
           <Page title="Create product">
             <CreateProduct></CreateProduct>
           </Page>
         </Route>
-        <Route path={`${url}/:productId/edit`}>
+        <Route path={`${path}/:productId/edit`}>
           <Page title="Edit product">
             <EditProduct></EditProduct>
           </Page>

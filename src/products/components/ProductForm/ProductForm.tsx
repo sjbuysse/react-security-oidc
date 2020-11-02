@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { InputField, TextAreaField, SubmitForm } from "components";
-import { Product } from "products/types";
+import { Product } from "products/models";
 import { FormField } from "models/form-field.interface";
 
 export interface ProductFormFields {

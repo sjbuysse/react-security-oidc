@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { match, useRouteMatch, useHistory } from "react-router-dom";
 import { Product, getProduct, editProduct, ProductForm } from "products";
-import { Dialog } from '../../../components/Dialog/Dialog';
 
 export function EditProduct() {
     const {
@@ -25,13 +24,10 @@ export function EditProduct() {
     }, []);
 
     return product ? (
-        <Dialog show={true} title={'Edit product'} onClose={goBackToProducts}>
-            <ProductForm
-                product={product}
-                onSubmit={onEditProduct}
-                onCancel={goBackToProducts}
-            ></ProductForm>
-        </Dialog>
-
+        <ProductForm
+            product={product}
+            onSubmit={onEditProduct}
+            onCancel={goBackToProducts}
+        ></ProductForm>
     ) : null;
 }

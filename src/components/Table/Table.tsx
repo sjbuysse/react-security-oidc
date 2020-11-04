@@ -6,12 +6,14 @@ type ExtendedType = { id: string } & { [key: string]: any };
 
 interface TableRowProps<T> {
   item: T;
+  isReadOnly: boolean;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
 function TableRow<T extends ExtendedType>({
   item,
+  isReadOnly,
   onEdit,
   onDelete,
 }: TableRowProps<T>) {
@@ -23,7 +25,7 @@ function TableRow<T extends ExtendedType>({
         </td>
       ))}
       <td className="border px-4 py-2 w-64">
-        <ActionButtonMenu>
+        <ActionButtonMenu disabled={isReadOnly}>
           <ActionButton
             className="mr-4"
             type={ActionButtonType.EDIT}
@@ -45,6 +47,7 @@ interface TableProps<T> {
   headers: string[];
   data: T[] | undefined;
   renderRow?: (item: T) => React.ReactNode;
+  isReadOnly?: boolean;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
 }
@@ -53,6 +56,7 @@ export function Table<T extends ExtendedType>({
   headers,
   data,
   renderRow,
+  isReadOnly = false,
   onEdit,
   onDelete,
 }: TableProps<T>) {
@@ -80,6 +84,7 @@ export function Table<T extends ExtendedType>({
             ) : (
               <TableRow
                 key={item.id}
+                isReadOnly={isReadOnly}
                 item={item}
                 onEdit={onEdit}
                 onDelete={onDelete}

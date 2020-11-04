@@ -1,38 +1,39 @@
 import React from "react";
 import {
-  Switch,
-  Route,
-  useRouteMatch,
-  match,
-  useHistory,
+    Switch,
+    Route,
+    useRouteMatch,
+    match,
+    useHistory,
 } from "react-router-dom";
 import { Page } from "components";
 import { ProductsTable } from "products";
 import { EditProduct, CreateProduct } from "products/containers";
+import { Dialog } from '../../../components/Dialog/Dialog';
 
 export function ProductsPage() {
-  const { url, path }: match = useRouteMatch();
-  const { push } = useHistory();
+    const {url}: match = useRouteMatch();
+    const {push} = useHistory();
 
-  const goToCreateProduct = () => push(`${url}/create`);
+    const goToCreateProduct = () => push(`${url}/create`);
 
-  return (
-      <Switch>
-        <Route exact path={path}>
-          <Page title="Products" onCreateButtonClick={goToCreateProduct}>
-            <ProductsTable></ProductsTable>
-          </Page>
-        </Route>
-        <Route path={`${path}/create`}>
-          <Page title="Create product">
-            <CreateProduct></CreateProduct>
-          </Page>
-        </Route>
-        <Route path={`${path}/:productId/edit`}>
-          <Page title="Edit product">
-            <EditProduct></EditProduct>
-          </Page>
-        </Route>
-      </Switch>
-  );
+
+    return (
+        <>
+            <Page title="Products" onCreateButtonClick={goToCreateProduct}>
+                <ProductsTable></ProductsTable>
+            </Page>
+            <Switch>
+                <Route path={`${url}/create`}>
+                    <Dialog show={true} title={'Create product'}
+                            onClose={() => push(url)}><CreateProduct></CreateProduct></Dialog>
+                </Route>
+                <Route path={`${url}/:productId/edit`}>
+                    <Dialog show={true} title={'Edit product'}
+                            onClose={() => push(url)}><EditProduct></EditProduct></Dialog>
+                </Route>
+            </Switch>
+        </>
+    );
 }
+

@@ -12,9 +12,7 @@ export function ProductsTable() {
     const history = useHistory();
     const isReadOnly = useSelector(selectIsReadOnly);
 
-    useEffect(() => {
-        return history.listen(() => retrieveProducts())
-    },[history]);
+    useEffect(() => history.listen(() => retrieveProducts()),[history]);
 
     const retrieveProducts = async () => {
         const result = await getProducts();

@@ -3,6 +3,8 @@ import { Client } from "../../models";
 import { deleteClient, getClients } from "../../services";
 import { Table } from "components";
 import { match, useRouteMatch, useHistory } from "react-router-dom";
+import { useSelector } from 'react-redux';
+import { selectIsReadOnly } from '../../../state/selectors';
 
 interface ClientTableData {
     id: string;
@@ -13,6 +15,7 @@ export function ClientsTable() {
     const [clients, setClients] = useState<Client[] | undefined>(undefined);
     const { url }: match = useRouteMatch();
     const { push } = useHistory();
+    const isReadOnly = useSelector(selectIsReadOnly);
     const retrieveClients = async () => {
         const result = await getClients();
         setClients(result);
@@ -38,6 +41,7 @@ export function ClientsTable() {
             <Table
                 headers={[ "Id", "Name" ]}
                 data={clientTableData}
+                isReadOnly={isReadOnly}
                 onEdit={(clientId) => push(`${url}/${clientId}/edit`)}
                 onDelete={onDeleteClient}
             ></Table>

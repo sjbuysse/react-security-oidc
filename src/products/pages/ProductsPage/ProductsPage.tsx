@@ -14,12 +14,12 @@ export function ProductsPage() {
   const { url, path }: match = useRouteMatch();
   const { push } = useHistory();
 
-  const gotToCreateProduct = () => push(`${url}/create`);
+  const goToCreateProduct = () => push(`${url}/create`);
 
   return (
       <Switch>
         <Route exact path={path}>
-          <Page title="Products" onCreateButtonClick={gotToCreateProduct}>
+          <Page title="Products" onCreateButtonClick={goToCreateProduct}>
             <ProductsTable></ProductsTable>
           </Page>
         </Route>

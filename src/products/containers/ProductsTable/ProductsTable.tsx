@@ -1,35 +1,40 @@
 import React, { useState, useEffect } from "react";
-import { match, useRouteMatch, useHistory } from "react-router-dom";
+import { match, useRouteMatch, useHistory, useLocation } from "react-router-dom";
 import { Product, getProducts, deleteProduct } from "products";
 import { Table } from "components";
 
 export function ProductsTable() {
-  const { url }: match = useRouteMatch();
-  const { push } = useHistory();
-  const [products, setProducts] = useState<Product[] | undefined>(undefined);
+    const [products, setProducts] = useState<Product[] | undefined>(undefined);
+    const {url}: match = useRouteMatch();
+    const location = useLocation();
+    const history = useHistory();
 
-  const retrieveProducts = async () => {
-    const result = await getProducts();
-    setProducts(result);
-  };
+    useEffect(() => history.listen(() => retrieveProducts()), []);
 
-  const onDeleteProduct = async (id: string) => {
-    if (window.confirm("Are you sure?")) {
-      await deleteProduct(id);
-      retrieveProducts();
-    }
-  };
+    const retrieveProducts = async () => {
+        const result = await getProducts();
+        setProducts(result);
+    };
 
-  useEffect(() => {
-    retrieveProducts();
-  }, []);
+    const onDeleteProduct = async (id: string) => {
+        if (window.confirm("Are you sure?")) {
+            await deleteProduct(id);
+            retrieveProducts();
+        }
+    };
 
-  return (
-    <Table
-      headers={["Id", "Name", "Description", "Product Code"]}
-      data={products}
-      onEdit={(productId) => push(`${url}/${productId}/edit`)}
-      onDelete={onDeleteProduct}
-    ></Table>
-  );
+    useEffect(() => {
+        retrieveProducts();
+    }, [history]);
+
+    return (
+        <Table
+            headers={["Id", "Name", "Description", "Product Code"]}
+            data={products}
+            onEdit={(productid) => {
+                history.push(`${url}/${productid}/edit`, {background: location})
+            }}
+            onDelete={onDeleteProduct}
+        ></Table>
+    );
 }

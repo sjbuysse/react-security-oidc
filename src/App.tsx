@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import { Routes } from './routes';
 import { ClientsPage } from './clients';
 import { ProductsPage } from './products/pages';
+import { Chat } from './chat/containers/Chat/Chat';
 
 const navItems = [{
     name: 'products',
@@ -15,6 +16,7 @@ const navItems = [{
 
 export function App() {
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+
     return (
         <div className="w-full h-full flex flex-col">
             <Header title='Jworks base app' handleClickMenuButton={() => setIsSidebarOpen(!isSidebarOpen)}/>
@@ -35,6 +37,7 @@ export function App() {
                     </SidenavContent>
                 </SidenavContainer>
             </div>
+            <Chat/>
         </div>
     );
 }

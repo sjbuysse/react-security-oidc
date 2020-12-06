@@ -15,6 +15,8 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.10",
     "@types/react-router-dom": "^5.1.5",
+    "cra-append-sw": "^2.7.0",
+    "firebase": "^8.1.2",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -25,8 +27,8 @@
     "typescript": "~3.7.2"
   },
   "scripts": {
-    "start": "npm run watch:tailwind && react-scripts start",
-    "build": "npm run build:tailwind && react-scripts build",
+    "start": "npm run watch:tailwind && react-scripts start && cra-append-sw --mode dev ./firebase-messaging-sw.js",
+    "build": "npm run build:tailwind && react-scripts build && cra-append-sw ./firebase-messaging-sw.js",
     "build:tailwind": "postcss src/assets/tailwind.css -o src/assets/tailwind.generated.css",
     "watch:tailwind": "postcss src/assets/tailwind.css -o src/assets/tailwind.generated.css",
     "test": "react-scripts test",

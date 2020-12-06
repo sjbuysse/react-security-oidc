@@ -38,24 +38,16 @@ export const Chatbox = ({messages, handleClose, handleSubmit}: Props) => {
         <div className='h-8 bg-primary-500 flex justify-end text-center'><Cross className='my-auto mx-2'
                                                                                 onClick={handleClose}/></div>
         <form onSubmit={submitMessage} className='flex flex-col p-2 bg-primary-900 border-2 border-primary-500 w-56'>
-            <InputFieldBase
-                hasFocus={true}
-                name='username'
-                className='mb-2'
-                placeholder='username'
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+            <InputFieldBase hasFocus={true} name='username' className='mb-2' placeholder='username' value={username}
+                            onChange={(e) => setUsername(e.target.value)}
             ></InputFieldBase>
             <div className='flex flex-col h-64 overflow-y-scroll'>
                 {messages.map(currentMessage => <Post message={currentMessage} key={currentMessage.createdAt}/>)}
                 <div ref={messagesEndRef}/>
             </div>
             <div className='flex align-center mt-4'>
-                <InputFieldBase
-                    name='message'
-                    placeholder='message'
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                <InputFieldBase name='message' placeholder='message' value={message}
+                                onChange={(e) => setMessage(e.target.value)}
                 ></InputFieldBase>
                 <button className='ml-2 my-auto' type='submit' style={{height: 'fit-content'}}
                         disabled={username.length === 0 || message.length === 0}>

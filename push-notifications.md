@@ -153,6 +153,7 @@ to false, so that the notification popup will disappear automatically after a co
 I have already created some basics in your chat feature, to speed up this workshop. 
 In the `chat/components` folder you can see that there is a `Chatbox` component,
 which is just a dumb form component that holds very little logic. It's just 2 input fields and a list of messages.
+There is also an effect that will automatically scroll to the bottom of the messages, when the messages are updated.
 And there is a `Post` component that the `Chatbox` uses to render the messages with some styling.
 Have a look at the components & you'll see it's really basic stuff.
 Feel free to interrupt me and ask about anything unclear in these components.

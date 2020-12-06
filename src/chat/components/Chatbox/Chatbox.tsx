@@ -24,11 +24,7 @@ export const Chatbox = ({messages, handleClose, handleSubmit}: Props) => {
         }
     }
 
-    const scrollToEndOfMessages = (behavior: 'smooth' | 'auto' = 'smooth') => messagesEndRef.current!.scrollIntoView({behavior: behavior})
-
-    useEffect(() => {
-        scrollToEndOfMessages('auto');
-    }, [messages])
+    const scrollToEndOfMessages = (behavior: 'smooth' | 'auto' = 'auto') => messagesEndRef.current!.scrollIntoView({behavior: behavior})
 
     useEffect(() => {
         scrollToEndOfMessages();

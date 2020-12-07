@@ -101,7 +101,7 @@ This file should have this name and be in this location, firebase will then know
 for us. 
 
 ```
-touch `public/firebase.messaging.sw.js`
+touch `public/firebase-messaging-sw.js`
 ```
 
 in this file copy the following code. This is just the setup so to register the serviceworker that can receive messages,
@@ -207,7 +207,7 @@ define a listener that listens for new messages.
 5. When our listener receives a new message, it needs to update the `messages` that our component passes down to the `Chatbox` component.
 
 Let's start with step 1
-```
+```tsx
 export const Chat = () => {
     const [isOpen, setIsOpen] = useState(false);
 

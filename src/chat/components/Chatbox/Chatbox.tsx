@@ -43,6 +43,7 @@ export const Chatbox = ({messages, handleClose, handleSubmit}: Props) => {
             </div>
             <div className='flex align-center mt-4'>
                 <InputFieldBase name='message' placeholder='message' value={message}
+                                className='min-w-0'
                                 onChange={(e) => setMessage(e.target.value)}
                 ></InputFieldBase>
                 <button className='ml-2 my-auto' type='submit' style={{height: 'fit-content'}}

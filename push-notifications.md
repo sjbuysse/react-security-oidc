@@ -8,7 +8,7 @@ Ps. It's important to note that the PUSH API only works on Chrome & Firefox, so 
 
 Start a new firebase project (we have already done this for you), and activate the messaging feature.
 When you go to the Settings of your firebase project, and look under the `Cloud Messaging` tab, you can find a 
-`Sender ID`. We have done this for you, and the `Sender ID` that you need is 319381111953.
+`Sender ID`. You'll be using our project, the `Sender ID` that you need is 319381111953.
 We need to add this information to the `manifest.json` of our project like this: 
 ```
   "gcm_sender_id": "319381111953",
@@ -47,11 +47,11 @@ const messaging = firebase.messaging();
 const firestore = firebase.firestore();
 ```
 
-Now in same file let's make a `requestFirebaseNotificationPermission` function that we can use to request a
-messaging token from firebase. This function uses the `messaging.getToken()` function which also will trigger a browser 
-permission request to the user to use the browser's PUSH api.
+Now in same file let's make a `requestFirebaseNotificationPermission` function that we can use to request permission from the
+user to use the browser's Notifications PUSH API. When we receive permission we will request a messaging token from firebase
+and save this token in the database (firestore), if it is not there already. 
 
-Then in our function we will save the received token in the database (firestore), if it is not there already.  
+Note that we are just defining the function here, we will call it later from our `Chat` module.
 ```
 export const requestFirebaseNotificationPermission = (serviceWorkerRegistration?: ServiceWorkerRegistration) =>
     messaging
@@ -94,26 +94,74 @@ const saveTokenToFirestore = (token: string): Promise<string> => {
 }
 ```
 
-There is one more thing we need to do before we can use this function to listen to Notifications on the frontend
-& that is to create a 'firebase-messaging-sw.js' file in the `public` folder of our project. This file will hold
-all the service worker logic to make the messaging also work when your app is closed, but for now we can just keep it empty.
+## Service worker
+There is one more thing we need to do before we can listen to the notifications & that is to create our serviceworker.
+Create a 'firebase-messaging-sw.js' file in the `public` folder of our project.
+This file should have this name and be in this location, firebase will then know where to find it and register the serviceworker
+for us. 
 
 ```
 touch `public/firebase-messaging-sw.js`
 ```
 
+in this file copy the following code. This is just the setup so to register the serviceworker that can receive messages,
+even when the app is closed!
+Important here is that the version of firebase (here 8.1.2) is the same as the one in your package.json. 
+So double check that!
+```
+importScripts('https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/8.1.2/firebase-messaging.js');
+
+firebase.initializeApp({
+    apiKey: "AIzaSyAh2uomua8n1hLapc-khRL4IewcyM2bRaE",
+    authDomain: "ordina-push-notification.firebaseapp.com",
+    databaseURL: "https://ordina-push-notification.firebaseio.com",
+    projectId: "ordina-push-notification",
+    storageBucket: "ordina-push-notification.appspot.com",
+    messagingSenderId: "319381111953",
+    appId: "1:319381111953:web:d698437c3e24aa5e5d6b30",
+    measurementId: "G-31K5XCP8HS"
+});
+
+const messaging = firebase.messaging();
+messaging.setBackgroundMessageHandler(function(event) {
+    console.log('[firebase-messaging-sw.js] Received background message ', event);
+    const data = event.data;
+    const notificationTitle = data.username;
+    const notificationOptions = {
+        body: data.message,
+        icon: 'ordina.png',
+        requireInteraction: false
+    };
+
+    self.onnotificationclick = function(event) {
+        console.log('On notification click: ', event.notification.tag);
+        event.notification.close();
+    };
+    return self.registration.showNotification(notificationTitle, notificationOptions);
+});
+```
+At the top of the file, we’re importing the firebase-app and the firebase-messaging libraries since we only need the messaging feature.
+Don’t worry if the import syntax is new. It’s a syntax for importing external scripts into serviceworker files. 
+
+Further in the file we define the `setBackgroundMessageHandler` callback, to define what should happen when we receive a message 
+when our app is minimized/closed. We will simply show a notification with the message and the Ordina logo, we also set `requireInteraction`
+to false, so that the notification popup will disappear automatically after a couple of seconds.
+
 ## Chat feature
 
-I have created some basics in your chat feature, to speed this workshop up. 
+I have already created some basics in your chat feature, to speed up this workshop. 
 In the `chat/components` folder you can see that there is a `Chatbox` component,
 which is just a dumb form component that holds very little logic. It's just 2 input fields and a list of messages.
 There is also an effect that will automatically scroll to the bottom of the messages, when the messages are updated.
 And there is a `Post` component that the `Chatbox` uses to render the messages with some styling.
 Have a look at the components & you'll see it's really basic stuff.
+Feel free to interrupt me and ask about anything unclear in these components.
 
-Your job now is first to create a service that can call the API to get the messages, or to send a new message.
-And then secondly you'll create a container component for our chat feature, that will hold the logic to toggle the chatbox open/closed
-and the logic to call our service.
+Your job now is first to create a service that can send requests to our API to get the messages, or to send a new message.
+And then secondly you'll create a container component for our `chat` feature, that will hold the logic to toggle the chatbox open/closed
+and the logic to send requests to our service. In this container we will also request the firebase messaging token,
+using the functions we just created.
 
 ### Service
 

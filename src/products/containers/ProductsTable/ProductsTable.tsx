@@ -22,8 +22,6 @@ export function ProductsTable() {
   const history = useHistory();
   const isReadOnly = useSelector(selectIsReadOnly);
 
-  useEffect(() => history.listen(() => retrieveProducts()), [history]);
-
   const retrieveProducts = async () => {
     const result = await getProducts();
     setProducts(result);

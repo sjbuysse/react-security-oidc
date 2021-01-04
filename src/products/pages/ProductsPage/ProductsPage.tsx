@@ -6,10 +6,9 @@ import {
   match,
   useHistory,
 } from "react-router-dom";
-import { Page } from "components";
+import { Page, ReadOnly, Dialog } from "components";
 import { ProductsTable } from "products";
 import { EditProduct, CreateProduct } from "products/containers";
-import { Dialog } from "../../../components/Dialog/Dialog";
 import { useSelector } from "react-redux";
 import { selectIsReadOnly } from "../../../state/selectors";
 
@@ -35,20 +34,12 @@ export function ProductsPage() {
             title={"Create product"}
             onClose={() => push(url)}
           >
-            {isReadOnly ? (
-              <span>The read-only setting is activated</span>
-            ) : (
-              <CreateProduct></CreateProduct>
-            )}
+            {isReadOnly ? <ReadOnly /> : <CreateProduct />}
           </Dialog>
         </Route>
         <Route path={`${url}/:productId/edit`}>
           <Dialog show={true} title={"Edit product"} onClose={() => push(url)}>
-            {isReadOnly ? (
-              <span>The read-only setting is activated</span>
-            ) : (
-              <EditProduct></EditProduct>
-            )}
+            {isReadOnly ? <ReadOnly /> : <EditProduct />}
           </Dialog>
         </Route>
       </Switch>

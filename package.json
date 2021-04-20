@@ -15,6 +15,7 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.10",
     "@types/react-router-dom": "^5.1.5",
+    "oidc-client": "1.11.5",
     "husky": "^4.3.6",
     "lint-staged": "^10.5.3",
     "node-sass": "^5.0.0",
@@ -33,7 +34,7 @@
     ]
   },
   "scripts": {
-    "start": "npm run watch:tailwind && react-scripts start",
+    "start": "PORT=4200 && npm run watch:tailwind && react-scripts start",
     "build": "npm run build:tailwind && react-scripts build",
     "build:tailwind": "postcss src/assets/tailwind.css -o src/assets/tailwind.generated.css",
     "watch:tailwind": "postcss src/assets/tailwind.css -o src/assets/tailwind.generated.css",

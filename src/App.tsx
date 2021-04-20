@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   Sidenav,
   SidenavContainer,
@@ -10,6 +10,8 @@ import { Switch, Route } from "react-router-dom";
 import { Routes } from "./routes";
 import { ClientsPage } from "./clients";
 import { ProductsPage } from "./products/pages";
+import { AuthService } from "./auth/services/AuthService";
+import { AuthContext } from "./auth/context/AuthContext";
 
 const navItems = [
   {
@@ -24,10 +26,14 @@ const navItems = [
 
 export function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const { authState, login, logout } = useContext(AuthContext);
   return (
     <div className="w-full h-full flex flex-col">
       <Header
         title="Jworks base app"
+        login={login}
+        logout={logout}
+        userInfo={authState.userInfo}
         handleClickMenuButton={() => setIsSidebarOpen(!isSidebarOpen)}
       />
       <div className="flex flex-1 flex-auto">

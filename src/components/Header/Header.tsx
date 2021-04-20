@@ -1,15 +1,32 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsReadOnly } from "../../state/selectors";
-import { toggleReadOnly } from "../../state/actions";
-import { Lock } from "../Icons/Lock";
+import { UserIcon } from "../Icons/User";
+import {
+  Menu,
+  MenuList,
+  MenuButton,
+  MenuItem,
+  MenuPopover,
+} from "@reach/menu-button";
+import "@reach/menu-button/styles.css";
+import { Profile } from "oidc-client";
 
 interface Props {
   title: string;
   handleClickMenuButton: () => void;
+  login: () => void;
+  logout: () => void;
+  userInfo: Profile | null;
 }
 
-export function Header({ title, handleClickMenuButton }: Props) {
+export function Header({
+  title,
+  handleClickMenuButton,
+  logout,
+  login,
+  userInfo,
+}: Props) {
   const isReadOnly = useSelector(selectIsReadOnly);
   const dispatch = useDispatch();
 
@@ -29,11 +46,37 @@ export function Header({ title, handleClickMenuButton }: Props) {
         </svg>
       </button>
       <h1 className="pl-3">{title}</h1>
-      <Lock
-        isOpen={!isReadOnly}
-        onClick={() => dispatch(toggleReadOnly())}
-        className={"ml-auto"}
-      />
+      <span className={"ml-auto"}>
+        <UserMenu login={login} userInfo={userInfo} logout={logout}></UserMenu>
+      </span>
     </nav>
   );
 }
+
+const UserMenu = ({
+  login,
+  userInfo,
+  logout,
+}: Pick<Props, "login" | "logout" | "userInfo">) => (
+  <Menu>
+    <MenuButton>
+      <UserIcon />
+    </MenuButton>
+    {userInfo ? (
+      <MenuPopover>
+        <UserInfo logout={logout} userInfo={userInfo} />
+      </MenuPopover>
+    ) : (
+      <MenuList>
+        <MenuItem onSelect={login}>Login</MenuItem>
+      </MenuList>
+    )}
+  </Menu>
+);
+
+const UserInfo = ({
+  logout,
+  userInfo,
+}: Pick<Props, "logout"> & { userInfo: Profile }) => (
+  <div className="bg-white">{userInfo.name}</div>
+);

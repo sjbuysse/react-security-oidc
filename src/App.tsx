@@ -33,7 +33,7 @@ export function App() {
         title="Jworks base app"
         login={login}
         logout={logout}
-        userInfo={authState.userInfo}
+        userInfo={authState?.userInfo}
         handleClickMenuButton={() => setIsSidebarOpen(!isSidebarOpen)}
       />
       <div className="flex flex-1 flex-auto">

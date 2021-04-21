@@ -3,23 +3,19 @@ import { Profile, User } from "oidc-client";
 import { AuthService } from "../services/AuthService";
 
 interface AuthState {
-  token: string | null;
-  expiresAt: string | null;
-  userInfo: Profile | null;
+  token: string;
+  expiresAt: string;
+  userInfo: Profile;
 }
 
 interface IAuthContext {
-  authState: AuthState;
+  authState: AuthState | null;
   login: () => void;
   logout: () => void;
 }
 
 export const AuthContext = createContext<IAuthContext>({
-  authState: {
-    token: null,
-    expiresAt: null,
-    userInfo: null,
-  },
+  authState: null,
   login: () => {},
   logout: () => {},
 });
@@ -27,11 +23,7 @@ const { Provider } = AuthContext;
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const authService = useRef<AuthService>();
-  const [authState, setAuthState] = useState({
-    token: null,
-    expiresAt: null,
-    userInfo: null,
-  });
+  const [authState, setAuthState] = useState<AuthState | null>(null);
 
   useEffect(() => {
     authService.current = new AuthService();
@@ -66,7 +58,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const setAuthInfo = ({ id_token, profile, expires_at }: User) => {
     console.log((expires_at - new Date().getTime() / 1000) / 60);
-    // @ts-ignore
     setAuthState({
       token: id_token,
       userInfo: profile,

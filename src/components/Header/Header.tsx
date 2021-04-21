@@ -17,7 +17,7 @@ interface Props {
   handleClickMenuButton: () => void;
   login: () => void;
   logout: () => void;
-  userInfo: Profile | null;
+  userInfo?: Profile;
 }
 
 export function Header({
@@ -65,6 +65,7 @@ const UserMenu = ({
     {userInfo ? (
       <MenuPopover>
         <UserInfo logout={logout} userInfo={userInfo} />
+        <button onClick={logout}>Logout</button>
       </MenuPopover>
     ) : (
       <MenuList>

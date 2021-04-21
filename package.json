@@ -34,7 +34,7 @@
     ]
   },
   "scripts": {
-    "start": "PORT=4200 && npm run watch:tailwind && react-scripts start",
+    "start": "npm run watch:tailwind && react-scripts start",
     "build": "npm run build:tailwind && react-scripts build",
     "build:tailwind": "postcss src/assets/tailwind.css -o src/assets/tailwind.generated.css",
     "watch:tailwind": "postcss src/assets/tailwind.css -o src/assets/tailwind.generated.css",

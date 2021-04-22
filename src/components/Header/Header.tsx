@@ -11,6 +11,8 @@ import {
 } from "@reach/menu-button";
 import "@reach/menu-button/styles.css";
 import { Profile } from "oidc-client";
+import { Lock } from "../Icons/Lock";
+import { toggleReadOnly } from "../../state/actions";
 
 interface Props {
   title: string;
@@ -47,6 +49,15 @@ export function Header({
       </button>
       <h1 className="pl-3">{title}</h1>
       <span className={"ml-auto"}>
+        <>
+          {!!userInfo && (
+            <Lock
+              isOpen={!isReadOnly}
+              onClick={() => dispatch(toggleReadOnly())}
+              className={"ml-auto"}
+            />
+          )}
+        </>
         <UserMenu login={login} userInfo={userInfo} logout={logout}></UserMenu>
       </span>
     </nav>

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   match,
   useRouteMatch,
   useHistory,
   useLocation,
 } from "react-router-dom";
-import { ProductRow, Product } from "products";
+import { ProductRow, Product, deleteProduct } from "products";
 import {
   ActionButtonType,
   ActionButton,
@@ -14,33 +14,32 @@ import {
 } from "components";
 import { useSelector } from "react-redux";
 import { selectIsReadOnly } from "../../../state/selectors";
+import { FetchContext } from "../../../auth/context/FetchContext";
 import axios from "axios";
 
 export function ProductsTable() {
   const [products, setProducts] = useState<Product[] | undefined>(undefined);
+  const authAxios = useContext(FetchContext);
   const { url }: match = useRouteMatch();
   const location = useLocation();
   const history = useHistory();
   const isReadOnly = useSelector(selectIsReadOnly);
 
   const retrieveProducts = async () => {
-    const result = (
-      await axios.get(`${process.env.REACT_APP_API_URL}/products`)
-    ).data;
+    const result = (await authAxios.get("/products")).data;
     setProducts(result);
   };
 
   const onDeleteProduct = async (id: string) => {
     if (window.confirm("Are you sure?")) {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/products/${id}`);
+      await authAxios.delete(`/products/${id}`);
       retrieveProducts();
     }
   };
 
   useEffect(() => {
     retrieveProducts();
-  }, []);
-  useEffect(() => history.listen(() => retrieveProducts()), [history]);
+  }, [history]);
 
   return (
     <Table

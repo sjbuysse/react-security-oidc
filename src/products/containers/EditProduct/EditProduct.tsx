@@ -1,26 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { match, useRouteMatch, useHistory } from "react-router-dom";
 import { Product, ProductForm } from "products";
-import axios from "axios";
+import { FetchContext } from "../../../auth/context/FetchContext";
 
 export function EditProduct() {
   const {
     params: { productId },
   }: match<{ productId: string }> = useRouteMatch();
   const { push } = useHistory();
+  const authAxios = useContext(FetchContext);
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const goBackToProducts = () => push("/products");
   const onEditProduct = async (productFields: Partial<Product>) => {
-    await axios.put(
-      `${process.env.REACT_APP_API_URL}/products/${productId}`,
-      productFields
-    );
+    const updatedProduct = { ...product!, ...productFields };
+    await authAxios.put(`/products/${updatedProduct.id}`, updatedProduct);
     goBackToProducts();
   };
   const retrieveProduct = async () => {
-    const result = (
-      await axios.get(`${process.env.REACT_APP_API_URL}/products/${productId}`)
-    ).data;
+    const result = (await authAxios.get(`/products/${productId}`)).data;
     setProduct(result);
   };
 

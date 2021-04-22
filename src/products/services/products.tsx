@@ -1,39 +1,23 @@
 import { Product } from "products/models";
+import axios, { AxiosInstance } from "axios";
 
-const apiUrl = "https://base-app-backend.herokuapp.com/products";
+const apiUrl = "https://base-app-backend.herokuapp.com";
+export const getProduct = async (
+  authAxios: AxiosInstance,
+  id: string
+): Promise<Product> => (await authAxios.get(`/products/${id}`)).data;
 
-export const getProduct = async (id: string): Promise<Product> =>
-  (await fetch(`${apiUrl}/${id}`)).json();
-
-export const getProducts = async (): Promise<Product[]> =>
-  (await fetch(apiUrl)).json();
+export const getProducts = async (
+  authAxios: AxiosInstance
+): Promise<Product[]> => (await authAxios.get("/products")).data;
 
 export const createProduct = async (
   product: Partial<Product>
-): Promise<Product> =>
-  (
-    await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(product),
-    })
-  ).json();
+): Promise<Product> => (await axios.post(apiUrl, product)).data;
 
 export const editProduct = async (product: Product): Promise<Product> =>
-  (
-    await fetch(`${apiUrl}/${product.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(product),
-    })
-  ).json();
+  (await axios.put(`${apiUrl}/${product.id}`, product)).data;
 
 export const deleteProduct = async (id: string): Promise<any> => {
-  return await fetch(`${apiUrl}/${id}`, {
-    method: "DELETE",
-  });
+  return await axios.delete(`${apiUrl}/${id}`);
 };

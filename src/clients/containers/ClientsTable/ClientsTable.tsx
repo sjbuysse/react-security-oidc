@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useSelector } from "react-redux";
 import { match, useRouteMatch, useHistory } from "react-router-dom";
 import {
@@ -15,14 +15,16 @@ import {
   ClientTableData,
 } from "clients";
 import { selectIsReadOnly } from "../../../state/selectors";
+import { FetchContext } from "../../../auth/context/FetchContext";
 
 export function ClientsTable() {
   const [clients, setClients] = useState<Client[] | undefined>(undefined);
   const { url }: match = useRouteMatch();
   const { push } = useHistory();
+  const authAxios = useContext(FetchContext);
   const isReadOnly = useSelector(selectIsReadOnly);
   const retrieveClients = async () => {
-    const result = await getClients();
+    const result = (await authAxios.get("/clients")).data;
     setClients(result);
   };
 
@@ -32,7 +34,7 @@ export function ClientsTable() {
 
   const onDeleteClient = async (id: string) => {
     if (window.confirm("Are you sure?")) {
-      await deleteClient(id);
+      await authAxios.delete(`/clients/${id}`);
       await retrieveClients();
     }
   };

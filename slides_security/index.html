@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>JWorks - ReactJS workshop</title>
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/ordina.css" id="theme">
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/tomorrow.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <script src="js/head.min.js"></script>
+    <!--Add support for earlier versions of Internet Explorer -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h1>ReactJS</h1>
+                <!--<h3>The start of all our presentations</h3>-->
+                <img src="img/jworks-logo.png" style="vertical-align: bottom;" width="22.5%" />
+            </section>
+
+            <section>
+                <h2>Hi, I'm Simon.</h2>
+                <p>
+                    Developer
+                    <br/> Ordina Belgium
+                    <br/> https://github.com/sjbuysse
+                    <br/> I'm a frontend developer @ Liantis and a ReactJS fanatic.
+                </p>
+            </section>
+
+            <section>
+                <h2>Agenda</h2>
+                <ul>
+                    <li>What is ReactJS?</li>
+                    <li>Components & JSX</li>
+                    <li>Data flow</li>
+                    <li>Forms</li>
+                    <li>Lifting the state</li>
+                    <li>Create react app</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>What is ReactJS</h2>
+                <ul>
+                    <li>Library (not framework)</li>
+                    <li>UI rendering engine</li>
+                    <li>Pair with other technologies</li>
+                </ul>
+                <blockquote data-trim data-noescape>It lets you compose complex UIs from small and isolated pieces of code called “components”.
+                </blockquote>
+                <aside class="notes">
+                    <strong>learn once, write anywhere</strong>
+                    <ul>
+                        <li>
+                            Redux om je front-end statemanagement te verbeteren,
+                        </li>
+                        <li>
+                            Zelfs voor uw routing kan je verschillende packages kiezen.
+                            React router om de navigatie te regelen.
+                        </li>
+                        <li>
+                            Veel conventie & community standaarden.
+                        </li>
+                    </ul>
+                </aside>
+            </section>
+
+            <section>
+                <section>
+                    <h2>2 ways to make a component</h2>
+                    <ul>
+                        <li>extend the class <code class="javascript" contenteditable>React.Component</code> and
+                            implement the <code>render</code> method that return the JSX.</li>
+                        <li>function component: a function that returns the JSX</li>
+                    </ul>
+                    <aside class="notes">
+                        Waarom zijn er 2 mannieren & Hoe moet je kiezen? Wel, deze 2 opties zijn historisch een beetje gegroeid.
+                        <br />
+                        Vroeger was het niet mogelijk om state bij te houden in een function component. Of om de lifecycle hooks te gebruiken.
+                        In die gevallen koos je de class implementatie.
+                        <br />class => render => JSX. Wie weet wat JSX is? JSX is een JavaScript extensie. Het lijkt
+                        alsof je HTML kan gebruiken in je JavaScript. Maar eigenlijk is dit gewoon sytactic sugar dat naar JS transpileert.
+                        We gaan hier straks nog verder op in gaan.
+                        <br /> React heeft de function components nu uitgebreid met React hooks, zodat je ook hier state en lifecycle hooks kan gebruiken
+                        <br/> Wij zullen vooral function components leren schrijven omdat dit de weg is dat React inslaagt.
+                        Ik toon wel nog even een class implementatie zodat je dit herkent als je het zou tegenkomen op het internet.
+                    </aside>
+                </section>
+                <section>
+                    <h2>A simple component <br/> The (old) <code>class</code> way</h2>
+                    <pre><code class="javascript" contenteditable>
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  componentDidMount() {
+  }
+
+  componentWillUnmount() {
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
+                </code></pre>
+                    <aside class="notes">
+                        Je kan in React op 2 mannieren een component maken, de eerste is door de implementatie van een Class
+                        Een react component maken is zeer simpel, je moet:
+                        <ul>
+                            <li>
+                                de Component class vanuit de React library overerven
+                            </li>
+                            <li>
+                                een render() methode implementeren die JSX terug geeft
+                            </li>
+                        </ul>
+                    </aside>
+                </section>
+                <section>
+                    <h2>Stateless Component</h2><pre><code class="javascript" contenteditable>
+const Clock = (props) => {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {props.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+}
+                </code></pre>
+                    <pre><code class="javascript" contenteditable>
+&lt;Clock date={new Date()}/&gt;
+                    </code></pre>
+                    <aside class="notes">
+                        Een function component is dus gewoon een function dat JSX returnt.
+                        Alle attributen dat je meegeeft aan je component komen binnen als property in een `props` object
+                        dat als argument aan de function meegegeven wordt.
+                        <br/> In dit voorbeeld geven we een `date` mee dat we dan kunnen displayen in onze component.
+                        <br/> Om state te houden in gebruiken we React Hooks, maar hier komen we later nog tot.
+                    </aside>
+                </section>
+                <section>
+                    <h2>composing simple components to a rich UI</h2>
+                    <pre><code class="javascript" contenteditable>
+const HelloMessage = () => (
+            &lt;div&gt;
+                Hello JWorks!
+            &lt;/div&gt;
+        );
+
+const ByeMessage = () => (
+            &lt;div&gt;
+                Bye JWorks!
+            &lt;/div&gt;
+        );
+
+const Letter = () => (
+            &lt;div&gt;
+                &lt;HelloMessage /&gt;
+                &lt;ByeMessage /&gt;
+            &lt;/div&gt;
+        );
+                </code></pre>
+                    <aside class="notes">
+                        Je kan met verschillende components een grotere component bouwen.
+                    </aside>
+                </section>
+                <section>
+                    <h2>JSX</h2>
+                    <pre><code class="javascript" contenteditable>
+const UserInfo = (props) =>  {
+    return (
+        <div>
+            {!!props.user
+            ? <span>{ user.name }</span>
+            : &lt;LoginButton onClick={props.handleLoginRequest} /&gt;}
+        </div>)
+}
+                </code></pre>
+                    <aside class="notes">
+                        Zoals je ziet is JSX iets dat oop een templating language trekt, en je kan ook javascript gebruiken
+                        om je return statement op te bouwen.
+                        <br />Door curly braces te gebruiken geef je aan dat je javascript aan het schrijven bent.
+                        <br />Zo zie je in dit voorbeeld dat al naargelang er een `user` property is een verschillend statement terug
+                        gegeven zal worden.
+                        <br/> je ziet ook dat we zo variabelen kunnen aanspreken in onze "HTML"
+                    </aside>
+                </section>
+                <section>
+                    <h2>TSX</h2>
+                    <pre><code class="javascript" contenteditable>
+interface User {
+    id: string;
+    name: string;
+    age: number;
+}
+interface Props {
+    user?: User;
+    handleLoginRequest: () => void;
+}
+const UserInfo = (props: Props) =>  {
+    return (
+        <div>
+            {!!props.user
+            ? <span>{ props.user.name }</span>
+            : &lt;LoginButton onClick={props.handleLoginRequest} /&gt;}
+        </div>)
+}
+            </code></pre>
+                    <aside class="notes">
+                        React komt nu ook met TypeScript, en dit is ook hoe wij het gaan aanleren.
+                        We zien hier dus hoe de props nu een interface hebben.
+                        Wanneer we dit definieren zal onze linter ook klagen als we een required attribute vergeten meegeven
+                        aan de `UserInfo` component.
+                    </aside>
+                </section>
+                <section>
+                    <h2>A component with a list</h2>
+                    <pre><code class="javascript" contenteditable>
+interface Props {
+    people: Person[]
+}
+
+const ContactList = (props) => {
+        return (
+            &lt;div&gt;
+                &lt;ul&gt;
+                    {props.people.map((person, index) =&gt;
+                        &lt;li key={index}&gt;
+                            {person.name}
+                        &lt;/li&gt;
+                    )}
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        )
+}
+            </code></pre>
+                    <pre><code class="javascript" contenteditable>
+const people = [
+    {name: 'Michael'},
+    {name: 'Peter'},
+    {name: 'Tyler'}
+]
+
+&lt;ContactList people={people}/&gt;
+                    </code></pre>
+                    <aside class="notes">
+                        In JSX mag je ook een array teruggeven van elementen, die zullen gewoon onder elkaar worden gerenderd.
+                        <br/>
+                        Hier zal dus een unordered list worden gerenderd met een list item voor elke person in de de people array.
+                    </aside>
+                </section>
+                <section>
+                    <h2>Under the hood</h2>
+                    <pre><code class="javascript" contenteditable>
+const people = [
+    { name: 'Michael' },
+    { name: 'Peter' },
+    { name: 'Tyler' }
+]
+
+const element = React.createElement('ul', null ,
+	people.map((person, index) =>
+		React.createElement('li', {key: index}, person.name);
+);
+                </code></pre>
+                    <pre><code class="javascript" contenteditable>
+class ContactList extends React.Component {
+    render() {
+        const people = [
+            { name: 'Michael' },
+            { name: 'Peter' },
+            { name: 'Tyler' }
+        ]
+        return &lt;ul&gt;
+            {people.map((person, index) =>
+                &lt;li key={person.idex}&gt;{person.name}&lt;/li&gt;
+            )}
+            &lt;/ul&gt;
+    }
+}
+                </code></pre>
+                    <aside class="notes">
+                        Eigenlijk zou je react kunnen schrijven zonder enige html tags erin te mengen. We moeten dan de
+                        <strong>createElement</strong> methode gebruiken om DOM elementen te maken. Zoals je ziet is dit een beetje
+                        lastig om zo allemaal je HTML elementen te creeeren. Daarom heeft men JSX gemaakt, wat eigenlijk
+                        een extensie is op JS. Zo kunnen we gewone tags zoals de
+                        <strong>div-tag</strong> gebruiken ipv telkens die createElement functie aan te roepen.
+                        <br />Achter de schermen wordt alles terug getranspileerd naar gewone JS.
+                    </aside>
+                </section>
+            </section>
+
+            <section>
+                <h2>Data flow</h2>
+                <pre><code class="javascript" contenteditable>
+const ContactList = (props) => (
+            &lt;div&gt;
+                &lt;ol&gt;
+                    {props.people.map((person, index) =&gt;
+                        &lt;li key={person.index}&gt;
+                            {person.name}
+                        &lt;/li&gt;
+                    )}
+                &lt;/ol&gt;
+            &lt;/div&gt;
+        )
+            </code></pre>
+                <pre><code class="javascript" contenteditable>
+const App = () => {
+    const people = [
+        {name: 'Michael'},
+        {name: 'Peter'},
+        {name: 'Tyler'}
+    ]
+
+    return &lt;ContactList people={people}/&gt;
+}
+                </code></pre>
+                <aside class="notes">
+                    - Data via HTML attributes.
+                    <br/> - Data van boven naar beneden, van parent component naar child via attributen.
+                    <br/> - Beschikbaar op props
+                    <br/> - Functional Components of Dumb components
+                    <br/> - Smart components of container components
+                    <br/>
+                </aside>
+
+            </section>
+
+
+
+            <section>
+                <section>
+                    <h2>A stateful component</h2>
+                    Props are read-only, add state for data that should change
+                    <pre><code contenteditable class="javascript">
+const ContactList = () => {
+    const [people, setPeople] = useState([
+                        {name: 'Michael'},
+                        {name: 'Peter'},
+                        {name: 'Tyler'}]);
+
+        return (
+            &lt;div&gt;
+                &lt;ul&gt;
+                    {people.map((person, index) =&gt;
+                    &lt;li key={person.index}&gt;{person.name}&lt;/li&gt;
+                    )}
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        )
+}
+
+                </code></pre>
+                    <aside class="notes">
+                        - Props read only
+                        <br/> - Props aanpassen = useless & zal geen re-render triggeren
+                        <br/> - Props komt van parent
+                        <br/> - `useState` hook voor state in een component te maken.
+                        Deze hook returnt een array met 2 waarden, de eerste is de huidige state,
+                        de 2e is een methode om deze waar de aan te passen. En dan weet React ook inneens dat hij moet
+                        re-renderen.
+                    </aside>
+                </section>
+
+                <section>
+                    <h2>A stateful component</h2>
+                    <pre><code class="javascript" contenteditable>
+const ContactList = () => {
+    const [people, setPeople] = useState([
+                        {name: 'Michael'},
+                        {name: 'Peter'},
+                        {name: 'Tyler'}]);
+
+    deletePerson(index) {
+        if(people.length > 0) {
+            setPeople(prevPeople => prevPeople.filter((person, i) => i !== index ))
+        }
+    }
+
+    return (
+            &lt;div&gt;
+                &lt;ol&gt;
+                    {people.map((person, index) =&gt;
+                        &lt;li key={index}&gt;
+                        {person.name}
+                        &lt;button onClick={() => deletePerson(index)}&gt;
+                            Delete person
+                        &lt;/button&gt;
+                        &lt;/li&gt;
+                    )}
+                &lt;/ol&gt;
+            &lt;/div&gt;
+        )
+}
+                </code></pre>
+                    <aside class="notes">
+                        We kunnen aan de setPeople functie ofwel een nieuwe waarde meegeven, of een callback waneer
+                        we de huidige state willen gebruiken bij de update.
+                    </aside>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2>Forms</h2>
+
+                    <pre><code class="javascript">
+handleSubmit = (e) => {
+    e.preventDefault()
+    // do something (change state, make REST call, etc.)
+}
+
+render() {
+    return (
+        &lt;form onSubmit={handleSubmit} className='create-contact-form'&gt;
+            &lt;label for=&quot;name&quot;&gt; Name: &lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;name&quot;/&gt;
+            &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
+        &lt;/form&gt;
+    )
+}
+                </code></pre>
+                </section>
+                <section>
+                    <h2>Controlled components</h2>
+                    <pre><code class="javascript">
+const NameForm = () => {
+        const [email, setEmail] = useState('');
+        return (
+            &lt;input type=&quot;text&quot;
+                   value={email}
+                   onChange={(e) => setEmail(e.target.value)}\&gt;
+        );
+}
+            </code></pre>
+                    <ul>
+                        <li>Validation</li>
+                        <li>Disabling submit</li>
+                        <li>Require certain input format</li>
+                        <li>...</li>
+                        <li>"Single source of truth"</li>
+                    </ul>
+                    <aside class="notes">
+                        Normaal gezien leeft form state in de DOM, en het kan zijn dat je het standaard form gedrag wilt behouden. Maar dit wil zeggen
+                        dat je op submit naar een ander pagina gestuurd wordt en dat je niet veel flexibiliteit hebt.
+                        <br />We kunnen meer flexibiliteit krijgen door de
+                        <strong>form state los te koppelen en te managen vanuit de applicatie</strong>. op die mannier kun je gemakkelijk
+                        bepalen wat te doen op submit, of uitgebreide validatie toevoegen, de submit knop disablen.
+                        <br/>
+                        <br/>Een van de belangrijkste redenen om deze loskoppeling te doen is om een single source of truth te
+                        hebben. Op deze mannier wordt alle mutable component state op 1 plek bewaard en wordt de component
+                        enkel geupdate met de setState methode.
+                        <br/>
+                        <br/>Om een controlled component te maken, geven we de `value` attribute mee aan onze form elementen. De enige mannier dat nu de
+                        `value` kan geupdate worden is als de state update! Daarom maken we ook een `onChange` handle die
+                        de state zal updaten.
+                    </aside>
+                </section>
+            </section>
+
+            <section>
+                <h2>Lifting the state</h2>
+                In order to make smart & dumb components, or to share state, we can lift the state up to a common ancestor.
+                <pre><code class="javascript">
+const App = () => {
+   const [count, setCount] = useState(0);
+
+    addOne = () =&gt; setCounter(prevCount => prevCount + 1);
+
+    return (
+        &lt;div&gt;
+            &lt;CounterDisplay count={count}/&gt;
+            &lt;ButtonComponent handleClick={addOne}/&gt;
+        &lt;/div&gt;
+    );
+}
+
+const CounterDisplay = (count) => (
+    <div className="fancy-counter">{counter}</div>
+)
+
+const ButtonComponent = (props) => (
+    &lt;button className="sparkly" onClick={props.handleClick}&gt;Click me!&lt;/button&gt;
+)
+            </code></pre>
+
+                <aside class="notes">
+                    - dumb component geeft gewoon UI terug in functie van zijn props.
+                    - smart component bevat meer business logic zoals state en misschien calls naar de backend.
+                    - Verschilllende components met zelfde data<br/>
+                    - State omhoog duwen<br/>
+                    - Children krijgen props<br/>
+                    - Voorbeeldje uitleggen<br/>
+                </aside>
+
+            </section>
+            <section>
+                <h2>Create react app</h2>
+                <pre><code class="nohighlight">
+npm install -g create-react-app
+create-react-app my-crazy-app-name
+            </code></pre>
+                <ul>
+                    <li>
+                        react
+                    </li>
+                    <li>
+                        react-dom: for rendering our components specifically for the DOM
+                    </li>
+                    <li>
+                        react-scripts: webpack, webpack-dev-server, babel (transpiling latest JS and JSX)
+                    </li>
+                </ul>
+                <aside class="notes">
+                    create-react-app is een node package van facebook om een basic react app te scaffolden met minimale libraries. het installeert
+                    react, react-dom, ...
+                </aside>
+            </section>
+            <!-- **********
+            DO NOT REMOVE
+        ********** -->
+            <section style="text-align: left;">
+                <h2>Thanks for watching!</h2>
+                <p>Special thanks to Jonatan, Tim, Dimi & Wouter for helping out 🔥🔥🔥</p>
+            </section>
+
+            <section style="text-align: left;" data-background="img/jworks-wallpaper-3.jpg"></section>
+        </div>
+    </div>
+    <script src="js/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            transition: 'convex',
+            dependencies: [
+                // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+                {
+                    src: 'lib/js/classList.js',
+                    condition: function () {
+                        return !document.body.classList;
+                    }
+                },
+                // Interpret Markdown in <section> elements
+                {
+                    src: 'plugin/markdown/marked.js',
+                    condition: function () {
+                        return !!document.querySelector('[data-markdown]');
+                    }
+                },
+                {
+                    src: 'plugin/markdown/markdown.js',
+                    condition: function () {
+                        return !!document.querySelector('[data-markdown]');
+                    }
+                },
+                // Syntax highlight for <code> elements
+                {
+                    src: 'plugin/highlight/highlight.js',
+                    async: true,
+                    callback: function () {
+                        hljs.initHighlightingOnLoad();
+                    }
+                },
+                // Zoom in and out with Alt+click
+                {
+                    src: 'plugin/zoom-js/zoom.js',
+                    async: true
+                },
+                // Speaker notes
+                {
+                    src: 'plugin/notes/notes.js',
+                    async: true
+                }
+            ]
+        });
+    </script>
+</body>
+
+</html>

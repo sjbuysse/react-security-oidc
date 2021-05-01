@@ -1,34 +1,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsReadOnly } from "../../state/selectors";
-import { UserIcon } from "../Icons/User";
-import {
-  Menu,
-  MenuList,
-  MenuButton,
-  MenuItem,
-  MenuPopover,
-} from "@reach/menu-button";
-import "@reach/menu-button/styles.css";
-import { Profile } from "oidc-client";
-import { Lock } from "../Icons/Lock";
 import { toggleReadOnly } from "../../state/actions";
+import { Lock } from "../Icons/Lock";
 
 interface Props {
   title: string;
   handleClickMenuButton: () => void;
-  login: () => void;
-  logout: () => void;
-  userInfo?: Profile;
 }
 
-export function Header({
-  title,
-  handleClickMenuButton,
-  logout,
-  login,
-  userInfo,
-}: Props) {
+export function Header({ title, handleClickMenuButton }: Props) {
   const isReadOnly = useSelector(selectIsReadOnly);
   const dispatch = useDispatch();
 
@@ -48,47 +29,11 @@ export function Header({
         </svg>
       </button>
       <h1 className="pl-3">{title}</h1>
-      <span className={"ml-auto"}>
-        <>
-          {!!userInfo && (
-            <Lock
-              isOpen={!isReadOnly}
-              onClick={() => dispatch(toggleReadOnly())}
-              className={"ml-auto"}
-            />
-          )}
-        </>
-        <UserMenu login={login} userInfo={userInfo} logout={logout}></UserMenu>
-      </span>
+      <Lock
+        isOpen={!isReadOnly}
+        onClick={() => dispatch(toggleReadOnly())}
+        className={"ml-auto"}
+      />
     </nav>
   );
 }
-
-const UserMenu = ({
-  login,
-  userInfo,
-  logout,
-}: Pick<Props, "login" | "logout" | "userInfo">) => (
-  <Menu>
-    <MenuButton>
-      <UserIcon />
-    </MenuButton>
-    {userInfo ? (
-      <MenuPopover>
-        <UserInfo logout={logout} userInfo={userInfo} />
-        <button onClick={logout}>Logout</button>
-      </MenuPopover>
-    ) : (
-      <MenuList>
-        <MenuItem onSelect={login}>Login</MenuItem>
-      </MenuList>
-    )}
-  </Menu>
-);
-
-const UserInfo = ({
-  logout,
-  userInfo,
-}: Pick<Props, "logout"> & { userInfo: Profile }) => (
-  <div className="bg-white">{userInfo.name}</div>
-);

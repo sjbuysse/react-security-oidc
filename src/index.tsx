@@ -7,8 +7,6 @@ import { BrowserRouter } from "react-router-dom";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { appReducer, featureKey as appFeature } from "./state/reducer";
-import { AuthProvider } from "./auth/context/AuthContext";
-import { FetchProvider } from "./auth/context/FetchContext";
 
 const store = configureStore({
   reducer: {
@@ -19,11 +17,7 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <AuthProvider>
-          <FetchProvider>
-            <App />
-          </FetchProvider>
-        </AuthProvider>
+        <App />
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,

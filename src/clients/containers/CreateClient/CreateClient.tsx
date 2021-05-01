@@ -1,15 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
-import { Client, ClientForm, createClient } from "clients";
+import { Client, ClientForm } from "clients";
 import axios from "axios";
-import { FetchContext } from "../../../auth/context/FetchContext";
 
 export function CreateClient() {
   const { push } = useHistory();
-  const authAxios = useContext(FetchContext);
   const goBackToClients = () => push("/clients");
   const onCreateClient = async (newClient: Partial<Client>) => {
-    await authAxios.post("/clients", newClient);
+    await axios.post(`${process.env.REACT_APP_API_URL}/clients`, newClient);
     goBackToClients();
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { match, useRouteMatch, useHistory } from "react-router-dom";
 import {
@@ -7,24 +7,18 @@ import {
   ActionButtonMenu,
   Table,
 } from "components";
-import {
-  deleteClient,
-  getClients,
-  ClientRow,
-  Client,
-  ClientTableData,
-} from "clients";
+import { ClientRow, Client, ClientTableData } from "clients";
 import { selectIsReadOnly } from "../../../state/selectors";
-import { FetchContext } from "../../../auth/context/FetchContext";
+import axios from "axios";
 
 export function ClientsTable() {
   const [clients, setClients] = useState<Client[] | undefined>(undefined);
   const { url }: match = useRouteMatch();
   const { push } = useHistory();
-  const authAxios = useContext(FetchContext);
   const isReadOnly = useSelector(selectIsReadOnly);
   const retrieveClients = async () => {
-    const result = (await authAxios.get("/clients")).data;
+    const result = (await axios.get(`${process.env.REACT_APP_API_URL}/clients`))
+      .data;
     setClients(result);
   };
 
@@ -34,7 +28,7 @@ export function ClientsTable() {
 
   const onDeleteClient = async (id: string) => {
     if (window.confirm("Are you sure?")) {
-      await authAxios.delete(`/clients/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/clients/${id}`);
       await retrieveClients();
     }
   };

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Sidenav,
   SidenavContainer,
@@ -10,14 +10,19 @@ import { Switch, Route } from "react-router-dom";
 import { Routes } from "./routes";
 import { ClientsPage } from "./clients";
 import { ProductsPage } from "./products/pages";
-import { AuthService } from "./auth/services/AuthService";
 import { AuthContext } from "./auth/context/AuthContext";
+import { AuthenticatedRoute } from "./auth/components/AuthenticatedRoute/AuthenticatedRoute";
+import { Login } from "auth/components/Login/Login";
 
 const navItems = [
   {
     name: "products",
     route: Routes.PRODUCTS,
   },
+];
+
+const authenticatedNavItems = [
+  ...navItems,
   {
     name: "clients",
     route: Routes.CLIENTS,
@@ -26,7 +31,8 @@ const navItems = [
 
 export function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
-  const { authState, login, logout } = useContext(AuthContext);
+  const { authState, isAuthenticated, login, logout } = useContext(AuthContext);
+
   return (
     <div className="w-full h-full flex flex-col">
       <Header
@@ -39,15 +45,20 @@ export function App() {
       <div className="flex flex-1 flex-auto">
         <SidenavContainer>
           <Sidenav isSidenavOpen={isSidebarOpen}>
-            <NavItems navItems={navItems} />
+            <NavItems
+              navItems={isAuthenticated() ? authenticatedNavItems : navItems}
+            />
           </Sidenav>
           <SidenavContent>
             <Switch>
               <Route path={Routes.PRODUCTS}>
                 <ProductsPage />
               </Route>
-              <Route path={Routes.CLIENTS}>
+              <AuthenticatedRoute path={Routes.CLIENTS}>
                 <ClientsPage />
+              </AuthenticatedRoute>
+              <Route path={Routes.LOGIN}>
+                <Login />
               </Route>
             </Switch>
           </SidenavContent>

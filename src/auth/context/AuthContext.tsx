@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useRef, useState } from "react";
-import { Profile, User } from "oidc-client";
-import { AuthService } from "../services/AuthService";
+import { Profile, User, UserManager } from "oidc-client";
+import { settings } from "../oidc-settings";
 
 interface AuthState {
   token: string;
@@ -24,47 +24,39 @@ export const AuthContext = createContext<IAuthContext>({
 const { Provider } = AuthContext;
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const authService = useRef<AuthService>();
+  const userManager = useRef<UserManager>();
   const [authState, setAuthState] = useState<AuthState | null>(null);
 
   useEffect(() => {
-    authService.current = new AuthService();
-    getUser();
+    userManager.current = new UserManager(settings);
+    loadUser();
   }, []);
 
-  const login = () => {
-    if (authService.current) {
-      authService.current.login();
-    } else {
-      console.log("authService not initialized");
-    }
-  };
+  const login = () => userManager.current!.signinRedirect();
 
   const logout = () => {
-    if (authService.current) {
-      authService.current.logout();
-      setAuthState(null);
-    } else {
-      console.log("authService not initialized");
-    }
+    userManager.current!.signoutRedirect();
+    setAuthState(null);
   };
 
-  const getUser = () => {
-    authService.current!.getUser().then((user) => {
+  const loadUser = () => {
+    userManager.current!.getUser().then((user) => {
       if (user) {
         if (user.expired) {
           // zal enkel werken bij refresh in zelde tablad (sessionStorage...)
-          authService
-            .current!.renewToken()
-            .catch((err) => authService.current!.removeUser());
+          renewToken();
         } else {
           setAuthInfo(user);
         }
-      } else {
-        console.log("you are not logged in");
       }
     });
   };
+
+  const renewToken = (): Promise<User | void> =>
+    userManager
+      .current!.signinSilent()
+      .then((user) => setAuthInfo(user))
+      .catch((err) => userManager.current!.removeUser());
 
   const isAuthenticated = () => {
     if (!authState?.userInfo || !authState.expiresAt) {

@@ -45,7 +45,7 @@ the application.
 Now let's pull out that `UserManager` logic from the `App` component, and create a `Context` and `Provider` to hold this
 logic. 
 
-Create a file `src/auth/context/AuthContext.tsx`, and copy in the code below.
+Create a file `src/auth/contexts/AuthContext.tsx`, and copy in the code below.
 As you can see, we create a wrapper (`AuthProvider`) around the `Provider` component from the `Context`.
 In this wrapper we can initialize the `UserManager`, and to handle `AuthState` changes, and we can pass
 the correct data to the `Provider` component.

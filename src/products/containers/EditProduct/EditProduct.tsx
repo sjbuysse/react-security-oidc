@@ -11,10 +11,9 @@ export function EditProduct() {
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const goBackToProducts = () => push("/products");
   const onEditProduct = async (productFields: Partial<Product>) => {
-    const updatedProduct = { ...product!, ...productFields };
     await axios.put(
-      `${process.env.REACT_APP_API_URL}/products/${updatedProduct.id}`,
-      updatedProduct
+      `${process.env.REACT_APP_API_URL}/products/${productId}`,
+      productFields
     );
     goBackToProducts();
   };

@@ -37,9 +37,7 @@ export function ProductsTable() {
     }
   };
 
-  useEffect(() => {
-    retrieveProducts();
-  }, [history]);
+  useEffect(() => history.listen(() => retrieveProducts()), [history]);
 
   return (
     <Table

@@ -17,10 +17,9 @@ export function EditClient() {
     setClient(result);
   };
   const onEditClient = async (clientFields: Partial<Client>) => {
-    const updatedClient = { ...client!, ...clientFields };
     await axios.put(
-      `${process.env.REACT_APP_API_URL}/clients/${updatedClient.id}`,
-      updatedClient
+      `${process.env.REACT_APP_API_URL}/clients/${clientId}`,
+      clientFields
     );
     goBackToClients();
   };

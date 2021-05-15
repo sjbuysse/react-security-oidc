@@ -37,6 +37,9 @@ export function ProductsTable() {
     }
   };
 
+  useEffect(() => {
+    retrieveProducts();
+  }, []);
   useEffect(() => history.listen(() => retrieveProducts()), [history]);
 
   return (

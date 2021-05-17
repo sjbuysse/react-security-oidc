@@ -60,7 +60,10 @@ FYI, you can also configure to store tokens elsewhere, for example in localStora
 or in the application memory for security reasons.
 ```tsx
 export function App() {
+    import {UserManager} from "oidc-client";
+    import {settings} from "./auth/oidc-settings";
     
+    //...
     const userManager = useRef<UserManager>();
     useEffect(() => {
         userManager.current = new UserManager(settings);
@@ -70,6 +73,7 @@ export function App() {
             }
         });
     }, []);
+   //...
 ```
 
 ## signin-callback.html
@@ -115,7 +119,8 @@ touch public/signin-callback.html
 ```
 
 As you can see, this html page loads a minimized version of the `oidc-client` and calls the `signinRedirectCallback` method.
-This will make an AJAX call, exchanging the authorization code for an access token (and the access token will be stored in sessionStorage).
+This will make an AJAX call, exchanging the `authorization code` for an `access token` (and the access token will be stored in sessionStorage).
+It will also automatically add the `code_verifier` for PKCE to the call.
 On success, it will navigate to `index.html` and thus open our application.
 
 You might have noticed that we actually don't have the `oidc-client.slim.min.js` file present!

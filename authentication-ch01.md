@@ -17,8 +17,9 @@ To access the variables in the context in a certain component, we wrap the compo
 The `Consumer` component can then pass the current context value to the wrapped component. 
 
 ```tsx
+//ExampleContext.tsx
 const user = {name: 'Simon', uid: '1234'}
-const ExampleContext = React.createContext();
+export const ExampleContext = React.createContext();
 //wrap your app in a Provider for the ExampleContext
 <ExampleContext.Provider value={user}><App /></ExampleContext.Provider>
 // Anywere nested under the App component you can wrap a component that needs access to the ExampleContext with the Consumer component
@@ -30,6 +31,7 @@ const ExampleContext = React.createContext();
 Now, since the creation of [hooks](https://reactjs.org/docs/hooks-intro.html), there is an alternative way of accessing
 the value in a context.
 ```tsx
+//App.tsx
 import React, { useContext } from "react";
 import {ExampleContext }from '../contexts/ExampleContext.tsx'
 const WelcomeComponent = () => {

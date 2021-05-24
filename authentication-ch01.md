@@ -7,8 +7,8 @@ To do this, we will use React's `Context` API.
 ## Context API
 If we wanted to use the `user` object on a deeply nested component, we would have to pass it all the way from the `App`
 component down to that component using the `props`.
-React provides an API that we can use to share variables in a certain part of the application.
-This is called the `Context`. 
+React provides an API that we can use to share variables in a certain part of the application, without prop drilling.
+This is called the `Context` API. 
 When we call the `createContext` function from the React library that creates a context in which you can put the variables you'd like to share.
 This function returns an object that holds both a `Provider` component and a `Consumer` component.
 2. Provider: All children (nested components) of this `Provider` component will have direct access to the variables in the context.
@@ -42,6 +42,11 @@ const WelcomeComponent = () => {
 You still have to make sure that the `WelcomeComponent` is part of the application that is nested inside the `Provider`
 component. Usually you just wrap the `Provider` component around the `App` component, this way you share data throughout
 the application.
+
+Ps. it's important to realize that the `Context` API is not a state management solution. It also re-renders all subscribers
+whenever a value changes, that's why you should only use it for semi-static data.
+Read more about this [on this blogpost ](https://blog.isquaredsoftware.com/2021/01/context-redux-differences/#purpose-and-use-cases-for-context) 
+by a Redux maintainer.
 
 ## AuthContext
 Now let's pull out that `UserManager` logic from the `App` component, and create a `Context` and `Provider` to hold this

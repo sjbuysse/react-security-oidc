@@ -180,3 +180,40 @@ First of all, let's pull in the `AuthContext` using the `useContext` API, and co
 In the `src/components/Header` folder you can find the `UserMenu` component pre-made for you, have a quick look at it
 and then position it next to the `Lock` component in the `Header`. Make sure to pass the necessary props.
 
+## Bonus
+Now that you understand the basic `Context` use, I'm going to give you a pro tip. We're going to create a custom hook
+that returns the `AuthContext`. So instead of doing
+```tsx
+import {AuthContext} from "./AuthContext";
+
+const context = React.useContext(AuthContext)
+```
+
+We'll be doing
+```tsx
+import {useAuth} from "./AuthContext";
+
+const context = useAuth();
+```
+You'll see in a second why this is cool.
+
+In the `AuthContext.tsx` file create the following custom hook, and export that in stead of the `AuthContext`
+```tsx
+export function useAuth() {
+  const context = React.useContext(AuthContext)
+  if (context === undefined) {
+    throw new Error('useCount must be used within a CountProvider')
+  }
+  return context
+}
+```
+There are 2 advantages with this. First of all, we will get immediately an error if we are trying to access the `AuthContext`
+from a place that is not wrapped by the `AuthProvider`.
+Second of all we can now initialize our `AuthContext` with `undefined` in stead of this useless weird empty `AuthContext` object.
+```tsx
+const AuthContext = createContext<IAuthContext | undefined>(undefined);
+```
+We didn't want to do this without the custom hook, because then we would have to null-check everytime we use this `AuthContect`
+in our app.
+
+Okay, refactor now your app (basically replace all the `useContext(AuthContext)` with `useAuth()`), or go to the next branch.

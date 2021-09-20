@@ -209,7 +209,17 @@ export function useAuth() {
 ```
 There are 2 advantages with this. First of all, we will get immediately an error if we are trying to access the `AuthContext`
 from a place that is not wrapped by the `AuthProvider`.
-Second of all we can now initialize our `AuthContext` with `undefined` in stead of this useless weird empty `AuthContext` object.
+Second of all we can now initialize our `AuthContext` with `undefined` instead of this useless weird empty `AuthContext` object.
+so replace: 
+```tsx
+export const AuthContext = createContext<IAuthContext>({
+    authState: null,
+    isAuthenticated: () => false,
+    login: () => {},
+    logout: () => {}
+});
+```
+with
 ```tsx
 const AuthContext = createContext<IAuthContext | undefined>(undefined);
 ```

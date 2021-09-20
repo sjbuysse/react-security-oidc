@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
   Sidenav,
   SidenavContainer,
@@ -26,16 +26,6 @@ const navItems = [
 
 export function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
-
-  const userManager = useRef<UserManager>();
-  useEffect(() => {
-    userManager.current = new UserManager(settings);
-    userManager.current.getUser().then((user) => {
-      if (user === null) {
-        userManager.current!.signinRedirect();
-      }
-    });
-  }, []);
 
   return (
     <div className="w-full h-full flex flex-col">

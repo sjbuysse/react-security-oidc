@@ -1,27 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { ClientForm, Client } from "clients";
 import { match, useRouteMatch, useHistory } from "react-router-dom";
-import axios from "axios";
+import {FetchContext} from "../../../auth/contexts/FetchContext";
 
 export function EditClient() {
   const {
     params: { clientId },
   }: match<{ clientId: string }> = useRouteMatch();
   const { push } = useHistory();
+  const authAxios = useContext(FetchContext);
   const [client, setClient] = useState<Client | undefined>(undefined);
   const goBackToClients = () => push("/clients");
   const retrieveClient = async () => {
-    const result = (
-      await axios(`${process.env.REACT_APP_API_URL}/clients/${clientId}`)
-    ).data;
+    const result = (await authAxios(`/clients/${clientId}`)).data;
     setClient(result);
   };
   const onEditClient = async (clientFields: Partial<Client>) => {
-    const updatedClient = { ...client!, ...clientFields };
-    await axios.put(
-      `${process.env.REACT_APP_API_URL}/clients/${updatedClient.id}`,
-      updatedClient
-    );
+    await authAxios.put(`/clients/${clientId}`, clientFields);
     goBackToClients();
   };
 

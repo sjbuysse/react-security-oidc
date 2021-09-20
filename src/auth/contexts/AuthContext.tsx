@@ -35,6 +35,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         loadUser().then(() => setIsInitialized(true));
     }, []);
 
+    useEffect(() => {
+        userManager.events.addAccessTokenExpiring(() => {
+            renewToken();
+        });
+        userManager.events.addAccessTokenExpired(() => {
+            renewToken();
+        });
+    }, []);
+
     const login = () => userManager.signinRedirect();
 
     const logout = () => {
@@ -44,10 +53,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const loadUser = () =>
         userManager.getUser().then((user) => {
-            if (user && !user.expired) {
+            if (user && user.expired) {
+                // will only work for refreshes.
+                // Save the token in localStorage if you want it to work in a completely new tab also.
+                return renewToken();
+            } else if (user) {
                 setAuthInfo(user);
             }
         });
+
+    const renewToken = (): Promise<User | void> =>
+        userManager
+            .signinSilent()
+            .then((user) => setAuthInfo(user))
+            .catch((err) => userManager.removeUser());
 
     const isAuthenticated = () => {
         if (!authState?.userInfo || !authState.expiresAt) {
@@ -66,8 +85,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return (
         <Provider
             value={{
-                authState,
                 isInitialized,
+                authState,
                 isAuthenticated,
                 login,
                 logout,

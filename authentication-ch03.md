@@ -157,7 +157,6 @@ const renewToken = (): Promise<User | void> =>
 
 ### Refreshing a stale access token on startup.
 It is also possible that we have an expired token in the `sessionStorage` when we startup the application. 
-We will change the `loadUser` logic in our `AuthProvider`, since this will be called when this component is mounted.
 ```tsx
 const loadUser = () => userManager.getUser().then((user) => {
   if (user && user.expired) {
